@@ -1,132 +1,62 @@
-// Initial declaration
-const randomNumber = Math.random()
-let computerMove = '';
-let result = '';
+// DOM Elements
+const rockBtn = document.getElementById('rock');
+const paperBtn = document.getElementById('paper');
+const scissorBtn = document.getElementById('scissor');
+const resultBoard = document.getElementById('result');
 
-// DOM
-const rockBtn = document.getElementById('rock')
-const paperBtn = document.getElementById('paper')
-const scissorBtn = document.getElementById('scissor')
-const resultBoard = document.getElementById('result')
-const container = document.getElementById('container')
+// Score Object
+const score = {
+    wins: 0,
+    losses: 0,
+    ties: 0
+};
 
+// Function to Generate Computer Move
+function getComputerMove() {
+    const randomNumber = Math.random();
+    if (randomNumber < 1 / 3) return 'Rock';
+    else if (randomNumber < 2 / 3) return 'Paper';
+    else return 'Scissor';
+}
 
-// Rock
+// Function to Handle Game Logic
+function playGame(playerMove) {
+    const computerMove = getComputerMove();
+    let result = '';
 
-// Button funtion
-rockBtn.addEventListener('click', () => {
-    if (randomNumber >= 0 && randomNumber < 1 / 3) {
-        computerMove = 'Rock'
-    } else if (randomNumber >= 1 / 3 && randomNumber < 2 / 3) {
-        computerMove = 'Paper'
-    } else if (randomNumber >= 2 / 3 && randomNumber < 1) {
-        computerMove = 'Scissor'
+    if (playerMove === computerMove) {
+        result = 'Tie';
+        score.ties++;
+    } else if (
+        (playerMove === 'Rock' && computerMove === 'Scissor') ||
+        (playerMove === 'Paper' && computerMove === 'Rock') ||
+        (playerMove === 'Scissor' && computerMove === 'Paper')
+    ) {
+        result = 'Win';
+        score.wins++;
+    } else {
+        result = 'Lose';
+        score.losses++;
     }
 
-    // Condition check with ComputerMove 
-    if (computerMove == 'Rock') {
-        result = 'Tie'
-    } else if (computerMove == 'Paper') {
-        result = 'Win'
-    } else if (computerMove == 'Scissor') {
-        result = 'Lose'
+    // Update Result Board
+    resultBoard.textContent = `You picked ${playerMove}, Computer picked ${computerMove}. You ${result}.
+    Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
+
+    // Change result board color
+    if (result === 'Win') {
+        resultBoard.style.backgroundColor = 'green';
+        resultBoard.style.color = 'antiquewhite';
+    } else if (result === 'Tie') {
+        resultBoard.style.backgroundColor = 'white';
+        resultBoard.style.color = 'rgb(32, 30, 30)';
+    } else {
+        resultBoard.style.backgroundColor = 'red';
+        resultBoard.style.color = 'antiquewhite';
     }
+}
 
-    // Result
-    resultBoard.textContent = `You picked Rock, Computer picked ${computerMove}. You are ${result}`
-
-    // Result-color-change
-    if (result == 'Win') {
-        resultBoard.style.backgroundColor = 'green'
-        resultBoard.style.color = 'antiquewhite'
-    } else if (result == 'Tie') {
-        resultBoard.style.backgroundColor = 'white'
-        resultBoard.style.color = 'rgb(32, 30, 30)'
-    } else if (result = 'Lose') {
-        resultBoard.style.backgroundColor = 'red'
-        resultBoard.style.color = 'antiquewhite'
-    }
-
-});
-
-
-
-
-// Paper
-
-// Button funtion
-paperBtn.addEventListener('click', () => {
-    if (randomNumber >= 0 && randomNumber < 1 / 3) {
-        computerMove = 'Rock'
-    } else if (randomNumber >= 1 / 3 && randomNumber < 2 / 3) {
-        computerMove = 'Paper'
-    } else if (randomNumber > 2 / 3 && randomNumber < 1) {
-        computerMove = 'Scissor'
-    }
-
-    // Condition check with ComputerMove
-    if (computerMove == 'Paper') {
-        result = 'Tie'
-    } else if (computerMove == 'Scissor') {
-        result = 'Win'
-    } else if (computerMove == 'Rock') {
-        result = 'Win'
-    }
-
-    // Result
-    resultBoard.textContent = `You picked  Paper, Computer picked ${computerMove}. You are ${result}`
-
-    // Result-color-change
-    if (result == 'Win') {
-        resultBoard.style.backgroundColor = 'green'
-        resultBoard.style.color = 'antiquewhite'
-    } else if (result == 'Tie') {
-        resultBoard.style.backgroundColor = 'white'
-        resultBoard.style.color = 'rgb(32, 30, 30)'
-    } else if (result = 'Lose') {
-        resultBoard.style.backgroundColor = 'red'
-        resultBoard.style.color = 'antiquewhite'
-    }
-
-});
-
-
-
-
-// Scissor
-
-// Button funtion
-scissorBtn.addEventListener('click', () => {
-    if (randomNumber >= 0 && randomNumber < 1 / 3) {
-        computerMove = 'Rock'
-    } else if (randomNumber >= 1 / 3 && randomNumber < 2 / 3) {
-        computerMove = 'Paper'
-    } else if (randomNumber > 2 / 3 && randomNumber < 1) {
-        computerMove = 'Scissor'
-    }
-
-    // Condition check with ComputerMove
-    if (computerMove == 'Scissor') {
-        result = 'Tie'
-    } else if (computerMove == 'Rock') {
-        result = 'Lose'
-    } else if (computerMove == 'Paper') {
-        result = 'Win'
-    }
-
-    // Result
-    resultBoard.textContent = `You picked  Scissor, Computer picked ${computerMove}. You are ${result}`
-
-    // Result-color-change
-    if (result == 'Win') {
-        resultBoard.style.backgroundColor = 'green'
-        resultBoard.style.color = 'antiquewhite'
-    } else if (result == 'Tie') {
-        resultBoard.style.backgroundColor = 'white'
-        resultBoard.style.color = 'rgb(32, 30, 30)'
-    } else if (result = 'Lose') {
-        resultBoard.style.backgroundColor = 'red'
-        resultBoard.style.color = 'antiquewhite'
-    }
-
-});
+// Event Listeners
+rockBtn.addEventListener('click', () => playGame('Rock'));
+paperBtn.addEventListener('click', () => playGame('Paper'));
+scissorBtn.addEventListener('click', () => playGame('Scissor'));
